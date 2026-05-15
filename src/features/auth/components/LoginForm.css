@@ -1,0 +1,297 @@
+.login-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: white;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 24px 80px rgba(15, 23, 42, 0.18),
+    0 8px 30px rgba(15, 23, 42, 0.08);
+
+  animation: loginFade 0.25s ease;
+}
+
+@keyframes loginFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  height: 64px;
+
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+
+  align-items: center;
+
+  border-bottom: 1px solid #ebebeb;
+
+  padding: 0 18px;
+}
+
+.login-header strong {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.login-close {
+  background: transparent;
+  color: #111827;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+}
+
+.login-close:hover {
+  background: #f3f4f6;
+}
+
+.login-body {
+  padding: 34px 32px 30px;
+}
+
+.login-body h1 {
+  margin: 0 0 26px;
+
+  font-size: 28px;
+
+  line-height: 1.2;
+}
+
+.login-field {
+  display: block;
+
+  border: 1px solid #b0b0b0;
+
+  padding: 14px 16px;
+
+  transition: 0.2s;
+}
+
+.login-field:focus-within {
+  border-color: #111827;
+}
+
+.login-field:first-of-type {
+  border-radius: 14px 14px 0 0;
+}
+
+.login-field:nth-of-type(2) {
+  border-radius: 0 0 14px 14px;
+  margin-top: -1px;
+}
+
+.login-field span {
+  display: block;
+
+  font-size: 12px;
+
+  color: #6b7280;
+
+  margin-bottom: 4px;
+}
+
+.login-field input {
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  font-size: 16px;
+}
+
+.login-note {
+  font-size: 12px;
+
+  color: #4b5563;
+
+  line-height: 1.5;
+
+  margin: 14px 0 22px;
+}
+
+.continue-btn {
+  width: 100%;
+
+  padding: 15px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #ff385c,
+    #e61e4d
+  );
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  transition: 0.2s;
+}
+
+.continue-btn:hover {
+  transform: translateY(-1px);
+}
+
+.login-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+
+  gap: 14px;
+
+  align-items: center;
+
+  margin: 26px 0;
+}
+
+.login-divider span {
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.login-divider small {
+  color: #6b7280;
+}
+
+.social-btn {
+  width: 100%;
+
+  background: white;
+
+  color: #111827;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 14px;
+
+  padding: 14px 18px;
+
+  margin-bottom: 14px;
+
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  transition: 0.2s;
+}
+
+.social-btn:hover {
+  background: #f9fafb;
+  border-color: #111827;
+}
+
+.auth-page {
+  min-height: calc(100vh - 76px);
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 40px 20px;
+
+  background:
+    linear-gradient(
+      rgba(248,250,252,0.94),
+      rgba(248,250,252,0.94)
+    ),
+    url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1600&auto=format&fit=crop");
+
+  background-size: cover;
+  background-position: center;
+}.login-input-group {
+  border: 1px solid #b0b0b0;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: white;
+}
+
+.login-field.clean {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+.login-field.clean:first-child {
+  border-bottom: 1px solid #d1d5db;
+}
+
+.login-field.clean input {
+  border: none;
+  padding: 6px 0 0;
+}
+
+.login-field.clean input:focus {
+  outline: none;
+}
+
+.login-subtitle {
+  color: #475569;
+  line-height: 1.6;
+  margin: -6px 0 22px;
+}
+
+.login-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+  margin: 28px 0 20px;
+  color: #64748b;
+}
+
+.login-divider span {
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.social-btn {
+  width: 100%;
+  height: 58px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: 0.2s ease;
+}
+
+.social-btn:hover {
+  border-color: #0f172a;
+  background: #f8fafc;
+}
+
+.social-btn svg {
+  font-size: 20px;
+}

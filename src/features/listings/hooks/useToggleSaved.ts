@@ -1,0 +1,3 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../../lib/axios';
+export function useToggleSaved() { const queryClient = useQueryClient(); return useMutation({ mutationFn: async (id: number) => api.post(`/saved/${id}`), onMutate: async (id) => { await queryClient.cancelQueries({ queryKey: ['saved'] }); const previous = queryClient.getQueryData<number[]>(['saved']) ?? []; const next = previous.includes(id) ? previous.filter((item) => item !== id) : [...previous, id]; queryClient.setQueryData(['saved'], next); return { previous }; }, onError: (_err, _id, context) => queryClient.setQueryData(['saved'], context?.previous ?? []), onSettled: () => queryClient.invalidateQueries({ queryKey: ['saved'] }) }); }

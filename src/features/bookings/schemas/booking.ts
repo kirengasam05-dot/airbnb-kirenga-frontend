@@ -1,0 +1,5 @@
+import { z } from 'zod';
+export const datesSchema = z.object({ checkIn: z.string().min(1,'Check-in required'), checkOut: z.string().min(1,'Check-out required'), guests: z.coerce.number().min(1).max(16) }).refine(d => new Date(d.checkOut) > new Date(d.checkIn), { message: 'Check-out must be after check-in', path: ['checkOut'] });
+export const personalSchema = z.object({ name: z.string().min(2), email: z.string().email(), phone: z.string().min(7), photo: z.any().optional().refine((files) => !files?.[0] || files[0].size <= 5 * 1024 * 1024, 'Photo must be under 5MB') });
+export const paymentSchema = z.object({ card: z.string().regex(/^\d{16}$/, 'Card must be 16 digits'), expiry: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Use MM/YY'), cvv: z.string().regex(/^\d{3}$/, 'CVV must be 3 digits') });
+export type DatesData = z.infer<typeof datesSchema>; export type PersonalData = z.infer<typeof personalSchema>; export type PaymentData = z.infer<typeof paymentSchema>; export type BookingData = Partial<DatesData & PersonalData & PaymentData>;

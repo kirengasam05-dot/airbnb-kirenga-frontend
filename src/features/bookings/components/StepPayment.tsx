@@ -1,0 +1,4 @@
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { paymentSchema, type PaymentData } from '../schemas/booking';
+export function StepPayment({ onNext, onBack }: { onNext: (d: PaymentData) => void; onBack: () => void }) { const { register, handleSubmit, formState:{errors} } = useForm<PaymentData>({ resolver: zodResolver(paymentSchema) }); return <form className="form" onSubmit={handleSubmit(onNext)}><h2>Payment</h2><input placeholder="Card number" {...register('card')}/><small>{errors.card?.message}</small><input placeholder="MM/YY" {...register('expiry')}/><small>{errors.expiry?.message}</small><input placeholder="CVV" {...register('cvv')}/><small>{errors.cvv?.message}</small><button type="button" onClick={onBack}>Back</button><button>Continue</button></form>; }
