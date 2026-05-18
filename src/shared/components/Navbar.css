@@ -1,128 +1,135 @@
 .site-header {
   width: 100%;
-  background: white;
-  border-bottom: 1px solid #eeeeee;
+  background: #fff;
+  border-bottom: 1px solid #ececec;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .airbnb-navbar {
-  height: 88px;
+  max-width: 1400px;
+  margin: auto;
+  min-height: 84px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 0 48px;
-  gap: 24px;
+  padding: 0 36px;
+  gap: 28px;
 }
 
 .airbnb-logo {
-  color: #ff385c;
-  text-decoration: none;
-  font-size: 22px;
-  font-weight: 900;
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  color: #ff385c;
+  font-size: 24px;
+  font-weight: 900;
 }
 
 .airbnb-logo svg {
-  font-size: 28px;
+  font-size: 34px;
+}
+
+.airbnb-search-wrapper {
+  position: relative;
 }
 
 .airbnb-search-pill {
-  width: min(640px, 100%);
-  height: 58px;
-  border: 1px solid #dddddd;
-  border-radius: 999px;
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.12);
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 52px;
-  align-items: center;
+  width: min(650px, 100%);
+  height: 64px;
   background: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 999px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 62px;
+  align-items: center;
   overflow: hidden;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
 }
 
 .airbnb-search-pill button {
   height: 100%;
+  background: transparent;
   border: none;
-  background: white;
   text-align: left;
   padding: 0 22px;
-  border-right: 1px solid #eeeeee;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.airbnb-search-pill button:hover,
+.airbnb-search-pill button.active {
+  background: #f7f7f7;
 }
 
 .airbnb-search-pill strong {
   display: block;
   font-size: 12px;
   color: #111827;
+  font-weight: 900;
 }
 
 .airbnb-search-pill span {
   display: block;
-  font-size: 13px;
   color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.airbnb-search-pill .search-circle {
-  width: 42px;
-  height: 42px;
-  margin: auto;
+.search-circle {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  padding: 0;
-  border: none;
-  background: #ff385c;
+  margin: auto;
+  background: #ff385c !important;
   color: white;
   display: grid;
   place-items: center;
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.search-circle:hover {
+  background: #e11d48 !important;
+  transform: scale(1.04);
 }
 
 .airbnb-actions {
   justify-self: end;
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
   position: relative;
 }
 
-.host-link {
-  color: #111827;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 800;
-  padding: 12px 16px;
-  border-radius: 999px;
-}
-
-.host-link:hover,
-.currency-btn:hover {
-  background: #f7f7f7;
-}
-
 .currency-btn {
-  border: none;
-  background: transparent;
+  border: 1px solid #e5e7eb;
+  background: white;
+  height: 46px;
+  min-width: 95px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 12px 14px;
-  border-radius: 999px;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
 
 .profile-menu-btn {
   height: 48px;
-  border: 1px solid #dddddd;
-  background: white;
+  border: 1px solid #ddd;
   border-radius: 999px;
-  padding: 0 8px 0 14px;
+  background: white;
+  padding: 0 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 
 .profile-menu-btn svg:last-child {
@@ -130,150 +137,173 @@
   color: #6b7280;
 }
 
-.currency-menu,
-.profile-dropdown {
+.profile-dropdown,
+.currency-menu {
   position: absolute;
-  top: 58px;
+  top: 60px;
   right: 0;
-  width: 240px;
+  width: 250px;
   background: white;
-  border-radius: 18px;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
   padding: 14px;
-  z-index: 200;
+  z-index: 1001;
 }
 
 .currency-menu {
-  right: 58px;
+  right: 70px;
 }
 
-.currency-menu strong {
-  display: block;
-  margin-bottom: 10px;
-  color: #111827;
-}
-
-.currency-menu button,
 .profile-dropdown a,
-.profile-dropdown button {
+.profile-dropdown button,
+.currency-menu button {
   width: 100%;
   border: none;
   background: white;
-  color: #111827;
-  text-decoration: none;
   display: block;
   text-align: left;
   padding: 12px;
   border-radius: 12px;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
+  color: #111827;
 }
 
-.currency-menu button:hover,
 .profile-dropdown a:hover,
-.profile-dropdown button:hover {
+.profile-dropdown button:hover,
+.currency-menu button:hover,
+.currency-menu button.active {
   background: #f7f7f7;
 }
 
-.profile-dropdown hr {
-  border: none;
-  border-top: 1px solid #eeeeee;
-  margin: 10px 0;
+.menu-user-box {
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 900px) {
-  .airbnb-navbar {
-    grid-template-columns: 1fr auto;
-    height: auto;
-    padding: 18px 20px;
-  }
-
-  .airbnb-search-pill {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100%;
-    margin-top: 16px;
-  }
-
-  .host-link {
-    display: none;
-  }
+.menu-user-box strong,
+.menu-user-box span {
+  display: block;
 }
 
-.airbnb-search-wrapper {
-  position: relative;
+.menu-user-box span {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 4px;
 }
+
+/* SEARCH PANELS */
 
 .search-panel {
   position: absolute;
-  top: 72px;
+  top: 78px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
-  border-radius: 28px;
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
-  z-index: 300;
-  padding: 24px;
+  border-radius: 30px;
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.16);
+  z-index: 1001;
+  padding: 26px;
 }
+
+.panel-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* WHERE PANEL */
 
 .where-panel {
-  width: 340px;
+  width: 420px;
   left: 0;
   transform: none;
+  padding: 26px;
 }
 
-.where-panel p {
-  margin: 0 0 16px;
-  color: #64748b;
+.where-input {
+  width: 100%;
+  height: 56px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 0 18px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  transition: 0.2s ease;
 }
 
-.where-panel button {
+.where-input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.destination-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.destination-list button {
   width: 100%;
   border: none;
   background: white;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px;
-  border-radius: 18px;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 16px;
   cursor: pointer;
+  transition: 0.2s ease;
   text-align: left;
 }
 
-.where-panel button:hover {
+.destination-list button:hover {
   background: #f8fafc;
 }
 
 .destination-icon {
-  width: 52px;
-  height: 52px;
-  background: #f1f5f9;
-  color: #ff385c;
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
   border-radius: 16px;
+  background: #f3f4f6;
   display: grid;
   place-items: center;
+  color: #ff385c;
+  font-size: 20px;
 }
 
-.where-panel strong,
-.where-panel small {
+.destination-list strong {
   display: block;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 900;
 }
 
-.where-panel small {
-  color: #64748b;
+.destination-list small {
+  display: block;
   margin-top: 4px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
 }
+
+/* DATE PANEL */
 
 .date-panel {
-  width: 720px;
-  padding: 26px 28px 24px;
-  border-radius: 26px;
+  width: 740px;
 }
 
 .date-tabs {
   width: 260px;
-  margin: 0 auto 24px;
-  background: #eeeeee;
+  margin: 0 auto 28px;
+  background: #f1f1f1;
   border-radius: 999px;
   padding: 4px;
   display: grid;
@@ -285,33 +315,34 @@
   background: transparent;
   border-radius: 999px;
   padding: 10px;
-  font-weight: 800;
+  font-weight: 900;
+  color: #111827;
   cursor: pointer;
 }
 
-.date-tabs .active {
+.date-tabs button.active {
   background: white;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.1);
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 42px;
+  gap: 36px;
 }
 
 .calendar-grid h4 {
-  text-align: center;
   margin: 0 0 18px;
+  text-align: center;
   color: #111827;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .calendar-weekdays,
 .calendar-days {
   display: grid;
-  grid-template-columns: repeat(7, 34px);
+  grid-template-columns: repeat(7, 42px);
   justify-content: center;
   gap: 8px;
 }
@@ -321,19 +352,18 @@
 }
 
 .calendar-weekdays span {
-  width: 34px;
-  height: 24px;
+  height: 28px;
   display: grid;
   place-items: center;
   color: #6b7280;
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 900;
 }
 
 .calendar-days button,
 .calendar-days span {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
 }
 
 .calendar-days button {
@@ -341,15 +371,17 @@
   background: transparent;
   border-radius: 50%;
   color: #111827;
-  font-size: 13px;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: 0.18s ease;
+  transition: 0.2s ease;
 }
 
-.calendar-days button:hover {
+.calendar-days button:hover,
+.calendar-days .selected {
   background: #111827;
   color: white;
 }
@@ -357,17 +389,16 @@
 .date-options {
   display: flex;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 26px;
   flex-wrap: wrap;
 }
 
 .date-options button {
   border: 1px solid #d1d5db;
   background: white;
-  padding: 8px 14px;
+  padding: 9px 14px;
   border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   color: #111827;
   cursor: pointer;
 }
@@ -377,10 +408,12 @@
   border-color: #111827;
 }
 
+/* GUESTS PANEL */
+
 .guests-panel {
-  width: 380px;
-  left: auto;
+  width: 360px;
   right: 0;
+  left: auto;
   transform: none;
 }
 
@@ -410,18 +443,52 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #d1d5db;
   background: white;
   display: grid;
   place-items: center;
   cursor: pointer;
 }
 
+.clear-search-btn {
+  border: none;
+  background: #111827;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+
 @media (max-width: 900px) {
+  .airbnb-navbar {
+    grid-template-columns: 1fr auto;
+    min-height: auto;
+    padding: 18px 20px;
+  }
+
+  .airbnb-search-wrapper {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .airbnb-search-pill {
+    width: 100%;
+    margin-top: 14px;
+    height: 58px;
+    grid-template-columns: 1fr 1fr 1fr 56px;
+  }
+
+  .airbnb-search-pill button {
+    padding: 0 12px;
+  }
+
   .date-panel,
   .where-panel,
   .guests-panel {
-    width: calc(100vw - 32px);
+    width: calc(100vw - 30px);
     left: 50%;
     right: auto;
     transform: translateX(-50%);
@@ -431,108 +498,78 @@
     grid-template-columns: 1fr;
   }
 }
-.menu-user-box {
-  padding: 12px;
-  border-radius: 14px;
-  background: #f8fafc;
-  margin-bottom: 8px;
+.search-circle {
+  width: 60px;
+  height: 35px;
+  border-radius: 50%;
+  margin: auto 7px auto 0;
+  background: #ff385c !important;
+  color: white;
+  display: grid;
+  place-items: center;
+  text-align: center !important;
+  padding: 0 !important;
 }
 
-.menu-user-box strong,
-.menu-user-box span {
-  display: block;
+.search-circle svg {
+  font-size: 20px;
 }
 
-.menu-user-box span {
-  color: #64748b;
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-.currency-btn {
-  display: flex !important;
-}
-
-.clean-date-panel {
-  width: 360px;
-  text-align: center;
-}
-
-.clean-date-panel h3 {
-  margin: 0 0 8px;
-}
-
-.clean-date-panel p {
-  color: #64748b;
-}
-.currency-btn {
-  border: 1px solid #dddddd !important;
-  background: white !important;
-  height: 44px;
-  min-width: 92px;
-  justify-content: center;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-}.currency-btn {
-  border: 1px solid #dddddd !important;
-  background: white !important;
+.clear-search-btn {
+  border: none;
+  background: #111827;
+  color: white;
   height: 46px;
-  min-width: 104px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   justify-content: center;
+}
+
+.currency-btn {
+  border: 1px solid #e5e7eb;
+  background: white;
+  height: 46px;
+  min-width: 112px;
+  border-radius: 999px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 900;
+  cursor: pointer;
   color: #111827 !important;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
 
 .currency-btn svg,
 .currency-btn span {
-  display: inline-block;
   color: #111827 !important;
+  display: inline-flex;
+  opacity: 1;
 }
 
-.date-panel {
-  width: 720px;
-  padding: 26px 28px 24px;
-  border-radius: 26px;
-}
-
-.date-options {
-  display: flex;
-  gap: 10px;
-  margin-top: 26px;
-}
-
-.date-options button {
-  border: 1px solid #d1d5db;
+.guest-controls button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
   background: white;
-  padding: 9px 14px;
-  border-radius: 999px;
-  font-weight: 700;
+  color: #111827;
+  display: grid;
+  place-items: center;
   cursor: pointer;
 }
-.airbnb-search-pill .search-circle {
-  pointer-events: auto;
-  cursor: pointer;
-  border-right: none !important;
-  z-index: 20;
+
+.guest-controls button svg {
+  font-size: 12px;
+  color: #111827;
 }
 
-.airbnb-search-pill .search-circle:hover {
-  background: #e11d48;
-  transform: scale(1.04);
-}
-
-.airbnb-search-pill .search-circle svg {
-  pointer-events: none;
-}
-
-.airbnb-search-pill button {
-  cursor: pointer;
-}
-.where-input {
-  width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 13px 14px;
-  margin-bottom: 14px;
-  outline: none;
-  font-weight: 700;
+.guest-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

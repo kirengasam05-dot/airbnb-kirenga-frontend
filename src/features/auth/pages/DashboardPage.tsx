@@ -1,4 +1,5 @@
 import { FormEvent, useMemo, useState } from "react";
+import { useFavorites } from "../../listings/hooks/useFavorites";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaBuilding,
@@ -34,7 +35,7 @@ import { aiChatRequest } from "../api/aiApi";
 import { useListings } from "../../listings/hooks/useListings";
 import { useCreateListing } from "../../listings/hooks/useCreateListing";
 import { useDeleteListing } from "../../listings/hooks/useDeleteListing";
-
+import { useMessages } from "../../messages/hooks/useMessages";
 import "./DashboardPage.css";
 
 type Role = "ADMIN" | "HOST" | "GUEST";
@@ -136,6 +137,9 @@ export function DashboardPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { data: listings = [] } = useListings();
+  const { messages, sendMessage } = useMessages();
+
+  const [newMessage, setNewMessage] = useState("");
 
   const createListingMutation = useCreateListing();
   const deleteListingMutation = useDeleteListing();
@@ -204,7 +208,7 @@ export function DashboardPage() {
   }, [listings, deletedListingIds]);
 
   const dashboardBookings = isGuest ? localGuestBookings : bookings;
-
+  const { saved } = useFavorites();
   const totalIncome = dashboardBookings
     .filter((booking) => booking.status === "Confirmed")
     .reduce((sum, booking) => {
@@ -635,7 +639,7 @@ Make it short, attractive, modern, and professional.
 
                   <button onClick={() => setActiveSection("saved")}>
                     <FaHeart />
-                    <strong>0</strong>
+                    <strong>{saved.length}</strong>
                     <span>Saved Homes</span>
                   </button>
 
@@ -655,56 +659,56 @@ Make it short, attractive, modern, and professional.
             </div>
 
             {isAdmin && (
-  <div className="analytics-grid">
-              <div className="analytics-card">
-                <h3>
-                  {isGuest
-                    ? "Trip Activity"
-                    : isHost
-                      ? "Reservations Growth"
-                      : "Platform Bookings"}
-                </h3>
+              <div className="analytics-grid">
+                <div className="analytics-card">
+                  <h3>
+                    {isGuest
+                      ? "Trip Activity"
+                      : isHost
+                        ? "Reservations Growth"
+                        : "Platform Bookings"}
+                  </h3>
 
-                <ResponsiveContainer width="100%" height={260}>
-                  <BarChart data={analyticsData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="bookings" radius={[10, 10, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={analyticsData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="bookings" radius={[10, 10, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="analytics-card">
+                  <h3>
+                    {isGuest
+                      ? "Spending Trend"
+                      : isHost
+                        ? "Earnings Trend"
+                        : "User Growth"}
+                  </h3>
+
+                  <ResponsiveContainer width="100%" height={260}>
+                    <LineChart data={analyticsData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey={isAdmin ? "users" : "earnings"}
+                        strokeWidth={3}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
+            )}
+          </section>
+        )}
 
-              <div className="analytics-card">
-                <h3>
-                  {isGuest
-                    ? "Spending Trend"
-                    : isHost
-                      ? "Earnings Trend"
-                      : "User Growth"}
-                </h3>
-
-                <ResponsiveContainer width="100%" height={260}>
-                  <LineChart data={analyticsData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey={isAdmin ? "users" : "earnings"}
-                      strokeWidth={3}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-           </div>
-           )}
-       </section>
-       )}
-
-       {activeSection === "createListing" && (isAdmin || isHost) && (
+        {activeSection === "createListing" && (isAdmin || isHost) && (
           <section className="reservation-table">
             <div className="table-header">
               <h3>Create New Listing</h3>
@@ -1141,22 +1145,127 @@ Make it short, attractive, modern, and professional.
           </section>
         )}
 
-        {activeSection === "saved" && isGuest && (
-          <section className="dashboard-empty">
-            <FaHeart />
-            <h3>No saved homes yet</h3>
-            <p>Browse listings and save homes you like for your next trip.</p>
+        {activeSection === "saved" && (isGuest || isHost) && (
+          <section className="reservation-table">
+            <div className="table-header">
+              <h3>Saved Homes</h3>
+            </div>
+
+            {saved.length === 0 ? (
+              <div className="dashboard-empty">
+                <FaHeart />
+                <h3>No saved homes yet</h3>
+                <p>
+                  Browse listings and save homes you like for your next trip.
+                </p>
+              </div>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Listing</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {saved.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.title}</td>
+                      <td>
+                        <button
+                          className="table-action"
+                          onClick={() => navigate(`/listings/${item.id}`)}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </section>
         )}
 
         {activeSection === "messages" && (
-          <section className="dashboard-empty">
-            <FaEnvelope />
-            <h3>No messages yet</h3>
-            <p>
-              Your conversations with guests, hosts, or support will appear
-              here.
-            </p>
+          <section className="reservation-table">
+            <div className="table-header">
+              <h3>Messages</h3>
+            </div>
+
+            <div className="messages-box">
+              {messages.length === 0 ? (
+                <div className="dashboard-empty">
+                  <FaEnvelope />
+                  <h3>No messages yet</h3>
+                </div>
+              ) : (
+                messages
+                  .filter((msg) => {
+                    if (isAdmin) return true;
+
+                    if (isGuest) {
+                      return (
+                        msg.sender === user?.name ||
+                        msg.sender === user?.email ||
+                        msg.receiver === user?.name ||
+                        msg.receiver === user?.email ||
+                        msg.receiver === "Guest"
+                      );
+                    }
+
+                    if (isHost) {
+                      return (
+                        msg.receiver === "Host" ||
+                        msg.sender === "Host" ||
+                        msg.sender === user?.name ||
+                        msg.sender === user?.email ||
+                        msg.receiver === user?.name ||
+                        msg.receiver === user?.email
+                      );
+                    }
+
+                    return false;
+                  })
+                  .map((msg) => (
+                    <div key={msg.id} className="message-card">
+                      <strong>{msg.sender}</strong>
+
+                      <p>{msg.text}</p>
+
+                      <small>{new Date(msg.createdAt).toLocaleString()}</small>
+                    </div>
+                  ))
+              )}
+
+              {!isAdmin && (
+                <div className="message-compose">
+                  <input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Write message..."
+                  />
+
+                  <button
+                    onClick={() => {
+                      if (!newMessage) return;
+
+                      sendMessage(
+                        user?.name || user?.email || "",
+                        isGuest ? "Host" : "Guest",
+                        newMessage,
+                        isGuest ? "GUEST" : "HOST",
+                      );
+
+                      setNewMessage("");
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
+              )}
+            </div>
           </section>
         )}
 

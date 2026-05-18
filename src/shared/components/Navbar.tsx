@@ -1,4 +1,3 @@
-import { aiSearchRequest } from "../../features/auth/api/aiApi";
 import { useEffect, useRef, useState } from "react";
 import {
   FaAirbnb,
@@ -11,85 +10,41 @@ import {
 } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 
+import { aiSearchRequest } from "../../features/auth/api/aiApi";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+
 import "./Navbar.css";
 
 type SearchPanel = "where" | "when" | "who" | null;
 
 const currencies = ["USD", "RWF", "EUR", "GBP"];
+
+const destinations = [
+  "Kigali",
+  "Rubavu",
+  "Musanze",
+  "Nyungwe",
+  "Dubai",
+  "Switzerland",
+];
+
 const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
 
 const may2026 = [
-  "",
-  "",
-  "",
-  "",
-  "",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-  "16",
-  "17",
-  "18",
-  "19",
-  "20",
-  "21",
-  "22",
-  "23",
-  "24",
-  "25",
-  "26",
-  "27",
-  "28",
-  "29",
-  "30",
+  "", "", "", "", "", "1", "2",
+  "3", "4", "5", "6", "7", "8", "9",
+  "10", "11", "12", "13", "14", "15", "16",
+  "17", "18", "19", "20", "21", "22", "23",
+  "24", "25", "26", "27", "28", "29", "30",
   "31",
 ];
 
 const june2026 = [
-  "",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-  "16",
-  "17",
-  "18",
-  "19",
-  "20",
-  "21",
-  "22",
-  "23",
-  "24",
-  "25",
-  "26",
-  "27",
-  "28",
-  "29",
-  "30",
+  "", "1", "2", "3", "4", "5", "6",
+  "7", "8", "9", "10", "11", "12", "13",
+  "14", "15", "16", "17", "18", "19", "20",
+  "21", "22", "23", "24", "25", "26", "27",
+  "28", "29", "30",
 ];
 
 export function Navbar() {
@@ -100,6 +55,7 @@ export function Navbar() {
   const [activePanel, setActivePanel] = useState<SearchPanel>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const [currency, setCurrency] = useState(
     localStorage.getItem("currency") || "USD",
@@ -122,18 +78,21 @@ export function Navbar() {
     }
 
     document.addEventListener("mousedown", closeDropdown);
+
     return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
 
   async function handleSearch() {
-    const searchValue = destination || "";
+    const searchValue = destination.trim();
 
     localStorage.setItem("listingSearch", searchValue);
     localStorage.setItem("searchGuests", String(guests));
     localStorage.setItem("searchDate", date);
 
     try {
-      if (searchValue.trim()) {
+      setSearching(true);
+
+      if (searchValue) {
         const response = await aiSearchRequest({
           query: searchValue,
           page: 1,
@@ -155,11 +114,27 @@ export function Navbar() {
       }
     } catch {
       localStorage.removeItem("aiSearchResults");
+    } finally {
+      setSearching(false);
     }
 
     window.dispatchEvent(new Event("listing-search-updated"));
 
     setActivePanel(null);
+    navigate("/");
+  }
+
+  function clearSearch() {
+    setDestination("");
+    setDate("");
+    setGuests(0);
+
+    localStorage.removeItem("listingSearch");
+    localStorage.removeItem("aiSearchResults");
+    localStorage.removeItem("searchGuests");
+    localStorage.removeItem("searchDate");
+
+    window.dispatchEvent(new Event("listing-search-updated"));
     navigate("/");
   }
 
@@ -173,17 +148,29 @@ export function Navbar() {
 
         <div className="airbnb-search-wrapper">
           <div className="airbnb-search-pill">
-            <button type="button" onClick={() => setActivePanel("where")}>
+            <button
+              type="button"
+              className={activePanel === "where" ? "active" : ""}
+              onClick={() => setActivePanel("where")}
+            >
               <strong>Where</strong>
               <span>{destination || "Search destinations"}</span>
             </button>
 
-            <button type="button" onClick={() => setActivePanel("when")}>
+            <button
+              type="button"
+              className={activePanel === "when" ? "active" : ""}
+              onClick={() => setActivePanel("when")}
+            >
               <strong>When</strong>
               <span>{date || "Add dates"}</span>
             </button>
 
-            <button type="button" onClick={() => setActivePanel("who")}>
+            <button
+              type="button"
+              className={activePanel === "who" ? "active" : ""}
+              onClick={() => setActivePanel("who")}
+            >
               <strong>Who</strong>
               <span>{guests > 0 ? `${guests} guests` : "Add guests"}</span>
             </button>
@@ -192,6 +179,8 @@ export function Navbar() {
               type="button"
               className="search-circle"
               onClick={handleSearch}
+              disabled={searching}
+              aria-label="Search listings"
             >
               <FaSearch />
             </button>
@@ -199,17 +188,18 @@ export function Navbar() {
 
           {activePanel === "where" && (
             <div className="search-panel where-panel">
-              <p>Search destination</p>
+              <p className="panel-title">Search destination</p>
 
               <input
                 value={destination}
-                onChange={(e) => setDestination(e.target.value)}
+                onChange={(event) => setDestination(event.target.value)}
                 placeholder="Type Kigali, Rubavu, Musanze..."
                 className="where-input"
+                autoFocus
               />
 
-              {["Kigali", "Rubavu", "Musanze", "Nyungwe", "Dubai"].map(
-                (place) => (
+              <div className="destination-list">
+                {destinations.map((place) => (
                   <button
                     key={place}
                     type="button"
@@ -222,12 +212,11 @@ export function Navbar() {
 
                     <span>
                       <strong>{place}</strong>
-
                       <small>Search stays in {place}</small>
                     </span>
                   </button>
-                ),
-              )}
+                ))}
+              </div>
             </div>
           )}
 
@@ -246,7 +235,7 @@ export function Navbar() {
 
                   <div className="calendar-weekdays">
                     {weekdays.map((day, index) => (
-                      <span key={`${day}-${index}`}>{day}</span>
+                      <span key={`may-${day}-${index}`}>{day}</span>
                     ))}
                   </div>
 
@@ -256,6 +245,7 @@ export function Navbar() {
                         <button
                           key={index}
                           type="button"
+                          className={date === `May ${day}, 2026` ? "selected" : ""}
                           onClick={() => {
                             setDate(`May ${day}, 2026`);
                             setActivePanel(null);
@@ -275,7 +265,7 @@ export function Navbar() {
 
                   <div className="calendar-weekdays">
                     {weekdays.map((day, index) => (
-                      <span key={`${day}-${index}`}>{day}</span>
+                      <span key={`june-${day}-${index}`}>{day}</span>
                     ))}
                   </div>
 
@@ -285,6 +275,7 @@ export function Navbar() {
                         <button
                           key={index}
                           type="button"
+                          className={date === `June ${day}, 2026` ? "selected" : ""}
                           onClick={() => {
                             setDate(`June ${day}, 2026`);
                             setActivePanel(null);
@@ -322,6 +313,7 @@ export function Navbar() {
                 <div className="guest-controls">
                   <button
                     type="button"
+                    disabled={guests === 0}
                     onClick={() => setGuests((value) => Math.max(0, value - 1))}
                   >
                     <FaMinus />
@@ -342,10 +334,19 @@ export function Navbar() {
         </div>
 
         <div className="airbnb-actions">
+          {(destination || date || guests > 0) && (
+            <button type="button" className="clear-search-btn" onClick={clearSearch}>
+              Clear
+            </button>
+          )}
+
           <button
             type="button"
             className="currency-btn"
-            onClick={() => setCurrencyOpen((current) => !current)}
+            onClick={() => {
+              setCurrencyOpen((current) => !current);
+              setMenuOpen(false);
+            }}
           >
             <FaGlobe />
             <span>{currency}</span>
@@ -354,7 +355,10 @@ export function Navbar() {
           <button
             type="button"
             className="profile-menu-btn"
-            onClick={() => setMenuOpen((current) => !current)}
+            onClick={() => {
+              setMenuOpen((current) => !current);
+              setCurrencyOpen(false);
+            }}
           >
             <FaBars />
             <FaUserCircle />
@@ -368,6 +372,7 @@ export function Navbar() {
                 <button
                   key={item}
                   type="button"
+                  className={currency === item ? "active" : ""}
                   onClick={() => {
                     setCurrency(item);
                     localStorage.setItem("currency", item);
@@ -389,14 +394,28 @@ export function Navbar() {
                 </div>
               )}
 
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/" onClick={() => setMenuOpen(false)}>
+                Home
+              </NavLink>
 
               {!isAuthenticated ? (
-                <NavLink to="/login">Log in or sign up</NavLink>
+                <NavLink to="/login" onClick={() => setMenuOpen(false)}>
+                  Log in or sign up
+                </NavLink>
               ) : (
                 <>
-                  <NavLink to="/dashboard">Dashboard</NavLink>
-                  <button type="button" onClick={logout}>
+                  <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
+                    Dashboard
+                  </NavLink>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      setMenuOpen(false);
+                      navigate("/");
+                    }}
+                  >
                     Logout
                   </button>
                 </>

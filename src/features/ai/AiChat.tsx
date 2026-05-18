@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FaRobot } from 'react-icons/fa'
 
 import { aiChatRequest } from '../auth/api/aiApi'
 
@@ -6,9 +7,7 @@ import './AiChat.css'
 
 export function AiChat() {
   const [open, setOpen] = useState(false)
-
   const [message, setMessage] = useState('')
-
   const [loading, setLoading] = useState(false)
 
   const [messages, setMessages] = useState<
@@ -72,10 +71,12 @@ export function AiChat() {
   return (
     <>
       <button
+        type="button"
         className="ai-chat-toggle"
         onClick={() => setOpen((prev) => !prev)}
       >
-        AI
+        <FaRobot />
+        <span>AI Assistant</span>
       </button>
 
       {open && (
@@ -83,7 +84,10 @@ export function AiChat() {
           <div className="ai-chat-header">
             <h3>AI Travel Assistant</h3>
 
-            <button onClick={() => setOpen(false)}>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+            >
               ×
             </button>
           </div>
@@ -109,6 +113,7 @@ export function AiChat() {
             />
 
             <button
+              type="button"
               onClick={sendMessage}
               disabled={loading}
             >
